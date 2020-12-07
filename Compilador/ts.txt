@@ -1,0 +1,11 @@
+NOMBRE                                       |TIPODATO                                     |VALOR                                        |LONGITUD                                     
+_cte_s0                                      |String                                       |"Ingrese un valor pivot mayor o igual a 1: " |42                                           
+pivot                                        |Integer                                      |-                                            |-                                            
+_1                                           |Integer                                      |1                                            |-                                            
+@pivot                                       |Integer                                      |-                                            |-                                            
+_cte_s1                                      |String                                       |"El valor debe ser >=1"                      |19                                           
+_5                                           |Integer                                      |5                                            |-                                            
+@contL                                       |Integer                                      |2                                            |-                                            
+_cte_s2                                      |String                                       |"La lista tiene menos elementos que el indicado"|44                                           
+resul                                        |Integer                                      |-                                            |-                                            
+_cte_s3                                      |String                                       |"El resultado es: "                          |17                                           

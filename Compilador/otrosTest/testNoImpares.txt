@@ -1,0 +1,6 @@
+WRITE "Ingrese un valor pivot mayor o igual a 1: "
+READ pivot
+
+resul = sumaimpar ( pivot ; [4, 0, 2, 4, 0, 0 ] )
+WRITE "El resultado es: "
+WRITE resul

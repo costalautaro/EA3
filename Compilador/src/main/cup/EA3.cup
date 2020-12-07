@@ -1,0 +1,202 @@
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+import java.util.stream.IntStream;
+import Tercetos.ListaDeTercetos;
+import Tabla.TablaDeSimbolos;
+import Assembler.GestorDeCodigoAssembler;
+
+action code     //Codigo para las acciones gramaticales
+{:
+    Integer Sind, Pind, SEind, Rind, Aind, Cind, Lind, Wind,nodoAuxCero,nodoFlagPivot,Compind,nodoCondicion,
+    nodoSumarAuxRes,nodoSumarFlag;
+    Integer cantElementosLista;
+    ListaDeTercetos listaDeTercetos = new ListaDeTercetos();
+    TablaDeSimbolos tablaDeSimbolos = new TablaDeSimbolos();
+     private Stack<String> pilaCola = new Stack<String>();
+    GestorDeCodigoAssembler gestorDeCodigoAssembler = new GestorDeCodigoAssembler();
+    public int contadorEtiquetas = 0;
+    boolean listaVacia = false;
+    String errorListaVacia = "La lista esta vacia";
+    String errorPivot = "El valor debe ser >=1";
+    String errorImp = "Elementos impares no encontrados";
+    String errorElList = "La lista tiene menos elementos que el indicado";
+    String errorPivotImp = "No existen suficientes elementos impares para el calculo";
+    Stack<Integer> pila = new Stack<Integer>(); 
+    public void mostrarRegla(Regla regla) {
+//        System.out.println(regla);
+    }
+
+	private Integer recorrerPilaParaCola(){
+        listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
+            tablaDeSimbolos.agregarEnTabla("@contL","Integer",String.valueOf(cantElementosLista),null);
+            Cind = listaDeTercetos.crearTerceto("CMP", "@pivot", "@contL");
+            listaDeTercetos.crearTerceto("BGE", Cind+ 4);
+            tablaDeSimbolos.agregarEnTabla(null, "String", "\"" + errorElList + "\"", errorElList.length() - 2);
+            String nombreCteErrorList = tablaDeSimbolos.buscarSimboloPorValor("\"" + errorElList + "\"").getNombre();
+            listaDeTercetos.crearTerceto("WRITE", nombreCteErrorList);
+            listaDeTercetos.crearTerceto("JMP", "fin");
+            
+    nodoAuxCero = listaDeTercetos.crearTerceto("=", "@auxResultado","_0");
+    nodoFlagPivot = listaDeTercetos.crearTerceto("=", "@flagPivot", "_0");
+       Compind = listaDeTercetos.crearTerceto("CMP","@flagPivot", "@pivot");
+       
+      nodoCondicion = listaDeTercetos.crearTerceto("BGE",Compind+6);
+      nodoSumarAuxRes = listaDeTercetos.crearTerceto("+", "@auxResultado", pilaCola.pop());
+      nodoSumarAuxRes = listaDeTercetos.crearTerceto("=", "@auxResultado", nodoSumarAuxRes);
+      nodoSumarFlag = listaDeTercetos.crearTerceto("+", "@flagPivot", "_1");
+      nodoSumarFlag = listaDeTercetos.crearTerceto("=", "@flagPivot", nodoSumarFlag);
+  
+    while(!pilaCola.empty()){
+      Compind = listaDeTercetos.crearTerceto("CMP","@flagPivot","@pivot");
+      nodoCondicion = listaDeTercetos.crearTerceto("BGE",Compind+6);
+      nodoSumarAuxRes = listaDeTercetos.crearTerceto("+", "@auxResultado", pilaCola.pop());
+      nodoSumarAuxRes = listaDeTercetos.crearTerceto("=", "@auxResultado", nodoSumarAuxRes);
+      nodoSumarFlag = listaDeTercetos.crearTerceto("+", "@flagPivot", "_1");
+      nodoSumarFlag = listaDeTercetos.crearTerceto("=", "@flagPivot", nodoSumarFlag);
+    }
+    return nodoSumarAuxRes;
+  }
+:}
+
+
+
+
+parser code     //Codigo que se le agrega al parser
+{:
+
+:}
+
+                //Declaracion de terminales
+terminal String cte;
+terminal String id;
+terminal asigna;
+terminal para;
+terminal parc;
+terminal String cte_s;
+terminal write;
+terminal cola;
+terminal pyc;
+terminal ca;
+terminal cc;
+terminal coma;
+terminal read;
+
+                //Declaracion de no terminales
+
+non terminal Symbol S,
+                    PROG,
+                    SENT,
+                    READ,
+                    ASIG,
+                    COLA,
+                    LISTA,
+                    WRITE;
+
+start with S;
+
+                //Regla gramaticales
+
+S       ::= PROG {: mostrarRegla(Regla.REGLA_0_S);
+                Sind = Pind;
+                tablaDeSimbolos.guardarTabla();
+                listaDeTercetos.guardarTercetos();
+                gestorDeCodigoAssembler.escribirAssemblerDeTercetos(listaDeTercetos.getTercetos(), tablaDeSimbolos.getListaDeSimbolos());
+                System.out.println("Compilacion OK");
+            :}
+            ;
+
+PROG    ::= SENT {: mostrarRegla(Regla.REGLA_1_PROG);
+            Pind = SEind;
+        :}
+        | PROG SENT {: mostrarRegla(Regla.REGLA_2_PROG); :}
+        ;
+
+SENT    ::= READ {: mostrarRegla(Regla.REGLA_3_SENT_R);
+             SEind = Rind;
+         :}
+        | WRITE {: mostrarRegla(Regla.REGLA_3_SENT_W);
+            SEind = Wind;
+         :}
+        | ASIG {: mostrarRegla(Regla.REGLA_3_SENT_A);
+            SEind = Aind;
+         :}
+        ;
+
+READ    ::= read id:id {: mostrarRegla(Regla.REGLA_4_READ);
+            tablaDeSimbolos.agregarEnTabla(id, "Integer", null, null);
+            tablaDeSimbolos.agregarEnTabla("_1" , "Integer", "1", null);
+            Rind = listaDeTercetos.crearTerceto("READ", id);
+            tablaDeSimbolos.agregarEnTabla("@pivot", "Integer", null, null);
+            listaDeTercetos.crearTerceto("=", "@pivot", id );
+            Cind = listaDeTercetos.crearTerceto("CMP", "@pivot", "1");
+            cantElementosLista = 0;
+            listaDeTercetos.crearTerceto("BLE", Cind + 4);
+            tablaDeSimbolos.agregarEnTabla(null, "String", "\"" + errorPivot + "\"", errorPivot.length() - 2);
+            String nombreCte = tablaDeSimbolos.buscarSimboloPorValor("\"" + errorPivot + "\"").getNombre();
+            listaDeTercetos.crearTerceto("WRITE", nombreCte);
+            listaDeTercetos.crearTerceto("BGE", "fin");
+        :}
+        ;
+
+ASIG    ::= id:id asigna COLA {: mostrarRegla(Regla.REGLA_5_ASIG);
+            tablaDeSimbolos.agregarEnTabla(id, "Integer", null, null);
+            
+            if(!listaVacia){
+            listaDeTercetos.crearTerceto("=", id, "@auxRes");
+        
+            
+            
+            
+           } 
+        :}
+        ;
+
+COLA  ::= cola para id:id pyc ca LISTA cc parc {: mostrarRegla(Regla.REGLA_6_SI);
+            listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
+            if(!tablaDeSimbolos.existeEnTabla(id)) throw new Error("La variable < " + id + " > no est� definida");
+            
+             Cind = recorrerPilaParaCola();
+            
+           
+        :}
+        | cola para id:id pyc ca cc parc {: mostrarRegla(Regla.REGLA_7_SI);
+            
+            listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
+        	tablaDeSimbolos.agregarEnTabla(null, "String", "\"" + errorListaVacia + "\"", errorListaVacia.length() - 2);
+            String nombreCte = tablaDeSimbolos.buscarSimboloPorValor("\"" + errorListaVacia + "\"").getNombre();
+            listaDeTercetos.crearTerceto("WRITE", nombreCte);
+            listaDeTercetos.crearTerceto("JMP", "fin");
+            listaVacia = true;
+            
+        :}
+        ;
+
+LISTA     ::= cte:cte {:
+                     tablaDeSimbolos.agregarEnTabla("_"+cte,"Integer", cte, null);
+                     cantElementosLista = 1;    
+                     pilaCola.push(cte);
+                    :}   
+                    |
+                    LISTA coma cte:cte
+                    {:
+                    
+                     tablaDeSimbolos.agregarEnTabla("_"+cte, "Integer", cte, null);
+                     cantElementosLista++; 
+                     pilaCola.push(cte);
+                    :} 
+                    ;
+
+WRITE   ::= write cte_s:cte {: mostrarRegla(Regla.REGLA_10_WRITE);
+           listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
+            tablaDeSimbolos.agregarEnTabla("@string", "String", cte, cte.length() - 2);
+            String nombreCte = tablaDeSimbolos.buscarSimboloPorValor(cte).getNombre();
+            Wind = listaDeTercetos.crearTerceto("WRITE", nombreCte);
+            :}
+        | write id:id {: mostrarRegla(Regla.REGLA_11_WRITE);
+           listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
+            if(!tablaDeSimbolos.existeEnTabla(id)) throw new Error("La variable < " + id + " > no est� definida");
+            Wind = listaDeTercetos.crearTerceto("WRITE", id);
+            :}
+        ;
