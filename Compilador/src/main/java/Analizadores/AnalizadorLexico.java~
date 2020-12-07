@@ -66,11 +66,11 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
     "\11\0\1\1\1\2\1\0\2\2\22\0\1\1\1\3"+
     "\1\4\3\3\1\0\1\3\1\5\1\6\2\3\1\7"+
     "\3\3\12\10\1\3\1\11\1\3\1\12\3\3\1\13"+
-    "\1\14\1\15\1\16\1\17\3\14\1\20\2\14\1\21"+
-    "\2\14\1\22\2\14\1\23\1\14\1\24\2\14\1\25"+
-    "\3\14\1\26\1\3\1\27\2\3\1\0\1\13\1\14"+
-    "\1\15\1\16\1\17\3\14\1\20\2\14\1\21\2\14"+
-    "\1\22\2\14\1\23\1\14\1\24\2\14\1\25\3\14"+
+    "\2\14\1\15\1\16\3\14\1\17\3\14\1\20\1\14"+
+    "\1\21\1\22\1\14\1\23\1\14\1\24\2\14\1\25"+
+    "\3\14\1\26\1\3\1\27\2\3\1\0\1\13\2\14"+
+    "\1\15\1\16\3\14\1\17\3\14\1\20\1\14\1\21"+
+    "\1\22\1\14\1\23\1\14\1\24\2\14\1\25\3\14"+
     "\4\3\261\0\2\30\u01ce\0";
 
   private static int [] zzUnpackcmap_blocks() {
@@ -100,10 +100,10 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\1\1\1\3\1\4\1\5\1\6"+
     "\1\7\1\10\4\11\1\12\1\13\1\0\1\14\6\11"+
-    "\1\0\1\15\1\16\1\11\1\0\2\17";
+    "\1\0\1\11\1\15\1\11\1\0\1\16\2\17";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[31];
+    int [] result = new int[32];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -131,10 +131,10 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
     "\0\0\0\31\0\31\0\62\0\31\0\31\0\31\0\113"+
     "\0\31\0\31\0\144\0\175\0\226\0\257\0\31\0\31"+
     "\0\62\0\62\0\310\0\341\0\372\0\u0113\0\u012c\0\u0145"+
-    "\0\u015e\0\144\0\144\0\u0177\0\u0190\0\144\0\31";
+    "\0\u015e\0\u0177\0\144\0\u0190\0\u01a9\0\144\0\144\0\31";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[31];
+    int [] result = new int[32];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -158,20 +158,21 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
 
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\2\2\3\1\2\1\4\1\5\1\6\1\7\1\10"+
-    "\1\11\1\12\2\13\1\14\5\13\1\15\1\13\1\16"+
-    "\1\17\1\20\1\2\32\0\1\21\1\0\1\21\1\22"+
-    "\23\21\11\0\1\10\30\0\1\13\2\0\13\13\13\0"+
-    "\1\13\2\0\7\13\1\23\3\13\13\0\1\13\2\0"+
-    "\4\13\1\24\6\13\13\0\1\13\2\0\10\13\1\25"+
-    "\2\13\13\0\1\13\2\0\6\13\1\26\4\13\13\0"+
-    "\1\13\2\0\1\27\12\13\13\0\1\13\2\0\5\13"+
-    "\1\30\5\13\2\0\1\31\10\0\1\13\2\0\1\32"+
-    "\12\13\13\0\1\13\2\0\3\13\1\33\7\13\13\0"+
+    "\1\11\1\12\7\13\1\14\1\15\1\13\1\16\1\17"+
+    "\1\20\1\2\32\0\1\21\1\0\1\21\1\22\23\21"+
+    "\11\0\1\10\30\0\1\13\2\0\13\13\13\0\1\13"+
+    "\2\0\10\13\1\23\2\13\13\0\1\13\2\0\3\13"+
+    "\1\24\7\13\13\0\1\13\2\0\10\13\1\25\2\13"+
+    "\13\0\1\13\2\0\6\13\1\26\4\13\13\0\1\13"+
+    "\2\0\1\27\12\13\13\0\1\13\2\0\4\13\1\30"+
+    "\6\13\2\0\1\31\10\0\1\13\2\0\5\13\1\32"+
+    "\5\13\13\0\1\13\2\0\2\13\1\33\10\13\13\0"+
     "\1\13\2\0\11\13\1\34\1\13\27\0\1\35\14\0"+
-    "\1\13\2\0\4\13\1\36\6\13\22\0\1\37\11\0";
+    "\1\13\2\0\10\13\1\36\2\13\13\0\1\13\2\0"+
+    "\3\13\1\37\7\13\21\0\1\40\12\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[425];
+    int [] result = new int[450];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -215,10 +216,10 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\1\0\2\11\1\1\3\11\1\1\2\11\4\1\2\11"+
-    "\1\0\7\1\1\0\3\1\1\0\1\1\1\11";
+    "\1\0\7\1\1\0\3\1\1\0\2\1\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[31];
+    int [] result = new int[32];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -774,12 +775,12 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
             // fall through
           case 27: break;
           case 13:
-            { return symbol(Simbolos.cola);
+            { return symbol(Simbolos.read);
             }
             // fall through
           case 28: break;
           case 14:
-            { return symbol(Simbolos.read);
+            { return symbol(Simbolos.promr);
             }
             // fall through
           case 29: break;

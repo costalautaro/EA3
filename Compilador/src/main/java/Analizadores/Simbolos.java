@@ -16,8 +16,8 @@ public class Simbolos {
   public static final int asigna = 4;
   public static final int ca = 11;
   public static final int EOF = 0;
-  public static final int cola = 9;
   public static final int error = 1;
+  public static final int promr = 9;
   public static final int cte = 2;
   public static final int parc = 6;
   public static final int pyc = 10;
@@ -33,7 +33,7 @@ public class Simbolos {
   "parc",
   "cte_s",
   "write",
-  "cola",
+  "promr",
   "pyc",
   "ca",
   "cc",

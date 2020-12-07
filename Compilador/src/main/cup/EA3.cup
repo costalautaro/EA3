@@ -28,7 +28,7 @@ action code     //Codigo para las acciones gramaticales
 //        System.out.println(regla);
     }
 
-	private Integer recorrerPilaParaCola(){
+	private Integer recorrerPila(){
         listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
             tablaDeSimbolos.agregarEnTabla("@contL","Integer",String.valueOf(cantElementosLista),null);
             Cind = listaDeTercetos.crearTerceto("CMP", "@pivot", "@contL");
@@ -76,7 +76,7 @@ terminal para;
 terminal parc;
 terminal String cte_s;
 terminal write;
-terminal cola;
+terminal promr;
 terminal pyc;
 terminal ca;
 terminal cc;
@@ -90,7 +90,7 @@ non terminal Symbol S,
                     SENT,
                     READ,
                     ASIG,
-                    COLA,
+                    PROMR,
                     LISTA,
                     WRITE;
 
@@ -140,7 +140,7 @@ READ    ::= read id:id {: mostrarRegla(Regla.REGLA_4_READ);
         :}
         ;
 
-ASIG    ::= id:id asigna COLA {: mostrarRegla(Regla.REGLA_5_ASIG);
+ASIG    ::= id:id asigna PROMR {: mostrarRegla(Regla.REGLA_5_ASIG);
             tablaDeSimbolos.agregarEnTabla(id, "Integer", null, null);
             
             if(!listaVacia){
@@ -153,15 +153,15 @@ ASIG    ::= id:id asigna COLA {: mostrarRegla(Regla.REGLA_5_ASIG);
         :}
         ;
 
-COLA  ::= cola para id:id pyc ca LISTA cc parc {: mostrarRegla(Regla.REGLA_6_SI);
+PROMR  ::= promr para id:id pyc ca LISTA cc parc {: mostrarRegla(Regla.REGLA_6_SI);
             listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
             if(!tablaDeSimbolos.existeEnTabla(id)) throw new Error("La variable < " + id + " > no est� definida");
             
-             Cind = recorrerPilaParaCola();
+             Cind = recorrerPila();
             
            
         :}
-        | cola para id:id pyc ca cc parc {: mostrarRegla(Regla.REGLA_7_SI);
+        | promr para id:id pyc ca cc parc {: mostrarRegla(Regla.REGLA_7_SI);
             
             listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
         	tablaDeSimbolos.agregarEnTabla(null, "String", "\"" + errorListaVacia + "\"", errorListaVacia.length() - 2);

@@ -40,7 +40,7 @@ ID = {LETRA}({LETRA}|{DIGITO})*
 %%      /* Regla lexicas */
 
 <YYINITIAL> "WRITE"	    { return symbol(Simbolos.write); }
-<YYINITIAL> "COLA"		{ return symbol(Simbolos.cola); }
+<YYINITIAL> "PROMR"		{ return symbol(Simbolos.promr); }
 <YYINITIAL> "READ"	    { return symbol(Simbolos.read); }
 
 

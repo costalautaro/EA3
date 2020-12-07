@@ -61,9 +61,9 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
     "\012\ufff4\020\ufff4\001\002\000\012\002\ufff3\005\ufff3\012" +
     "\ufff3\020\ufff3\001\002\000\012\002\ufffe\005\ufffe\012\ufffe" +
     "\020\ufffe\001\002\000\004\002\001\001\002\000\012\002" +
-    "\ufffa\005\ufffa\012\ufffa\020\ufffa\001\002\000\004\013\023" +
-    "\001\002\000\004\007\025\001\002\000\012\002\ufff9\005" +
-    "\ufff9\012\ufff9\020\ufff9\001\002\000\004\005\026\001\002" +
+    "\ufffa\005\ufffa\012\ufffa\020\ufffa\001\002\000\004\013\024" +
+    "\001\002\000\012\002\ufff9\005\ufff9\012\ufff9\020\ufff9\001" +
+    "\002\000\004\007\025\001\002\000\004\005\026\001\002" +
     "\000\004\014\027\001\002\000\004\015\030\001\002\000" +
     "\006\004\032\016\033\001\002\000\006\016\036\017\035" +
     "\001\002\000\006\016\ufff6\017\ufff6\001\002\000\004\010" +
@@ -84,7 +84,7 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
     "\003\006\011\011\012\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\004\007\023\001\001\000\002\001" +
+    "\000\002\001\001\000\004\007\022\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\004\010\030\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
@@ -315,7 +315,7 @@ class CUP$AnalizadorSintactico$actions {
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 8: // ASIG ::= id asigna COLA 
+          case 8: // ASIG ::= id asigna PROMR 
             {
               Symbol RESULT =null;
 		int idleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).left;
@@ -337,7 +337,7 @@ class CUP$AnalizadorSintactico$actions {
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 9: // COLA ::= cola para id pyc ca LISTA cc parc 
+          case 9: // PROMR ::= promr para id pyc ca LISTA cc parc 
             {
               Symbol RESULT =null;
 		int idleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)).left;
@@ -351,12 +351,12 @@ class CUP$AnalizadorSintactico$actions {
             
            
         
-              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("COLA",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-7)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("PROMR",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-7)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // COLA ::= cola para id pyc ca cc parc 
+          case 10: // PROMR ::= promr para id pyc ca cc parc 
             {
               Symbol RESULT =null;
 		int idleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-4)).left;
@@ -372,7 +372,7 @@ class CUP$AnalizadorSintactico$actions {
             listaVacia = true;
             
         
-              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("COLA",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-6)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("PROMR",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-6)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
 

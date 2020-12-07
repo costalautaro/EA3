@@ -1,6 +1,5 @@
 WRITE "Ingrese un valor pivot mayor o igual a 1: "
 READ pivot
-
-resul = cola ( pivot ; [ 1, 5 ] )
+resul = promr ( pivot ; [ 1, 5 ] )
 WRITE "El resultado es: "
 WRITE resul
