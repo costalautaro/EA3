@@ -136,55 +136,25 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
 class CUP$AnalizadorSintactico$actions {
 
 
-    Integer Sind, Pind, SEind, Rind, Aind, Cind, Lind, Wind,nodoAuxCero,nodoFlagPivot,Compind,nodoCondicion,
-    nodoSumarAuxRes,nodoSumarFlag;
-    Integer cantElementosLista;
+    Integer Sind, Pind, SEind, Rind, Aind, Promind, Lind, Wind, Etind;
+    Integer contString;
     ListaDeTercetos listaDeTercetos = new ListaDeTercetos();
     TablaDeSimbolos tablaDeSimbolos = new TablaDeSimbolos();
-     private Stack<String> pilaCola = new Stack<String>();
+	Boolean listaVacia;
     GestorDeCodigoAssembler gestorDeCodigoAssembler = new GestorDeCodigoAssembler();
-    public int contadorEtiquetas = 0;
-    boolean listaVacia = false;
-    String errorListaVacia = "La lista esta vacia";
+	Integer contadorCteString = 0;
+
+    String errorListaVacia = "La lista esta vacia, resultado: 0";
     String errorPivot = "El valor debe ser >=1";
-    String errorImp = "Elementos impares no encontrados";
-    String errorElList = "La lista tiene menos elementos que el indicado";
-    String errorPivotImp = "No existen suficientes elementos impares para el calculo";
-    Stack<Integer> pila = new Stack<Integer>(); 
+    String errorMayor = "No existen elementos para el calculo, el resultado es 0";
     public void mostrarRegla(Regla regla) {
 //        System.out.println(regla);
     }
-
-	private Integer recorrerPilaParaCola(){
-        listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
-            tablaDeSimbolos.agregarEnTabla("@contL","Integer",String.valueOf(cantElementosLista),null);
-            Cind = listaDeTercetos.crearTerceto("CMP", "@pivot", "@contL");
-            listaDeTercetos.crearTerceto("BGE", Cind+ 4);
-            tablaDeSimbolos.agregarEnTabla(null, "String", "\"" + errorElList + "\"", errorElList.length() - 2);
-            String nombreCteErrorList = tablaDeSimbolos.buscarSimboloPorValor("\"" + errorElList + "\"").getNombre();
-            listaDeTercetos.crearTerceto("WRITE", nombreCteErrorList);
-            listaDeTercetos.crearTerceto("JMP", "fin");
-            
-    nodoAuxCero = listaDeTercetos.crearTerceto("=", "@auxResultado","_0");
-    nodoFlagPivot = listaDeTercetos.crearTerceto("=", "@flagPivot", "_0");
-       Compind = listaDeTercetos.crearTerceto("CMP","@flagPivot", "@pivot");
-       
-      nodoCondicion = listaDeTercetos.crearTerceto("BGE",Compind+6);
-      nodoSumarAuxRes = listaDeTercetos.crearTerceto("+", "@auxResultado", pilaCola.pop());
-      nodoSumarAuxRes = listaDeTercetos.crearTerceto("=", "@auxResultado", nodoSumarAuxRes);
-      nodoSumarFlag = listaDeTercetos.crearTerceto("+", "@flagPivot", "_1");
-      nodoSumarFlag = listaDeTercetos.crearTerceto("=", "@flagPivot", nodoSumarFlag);
-  
-    while(!pilaCola.empty()){
-      Compind = listaDeTercetos.crearTerceto("CMP","@flagPivot","@pivot");
-      nodoCondicion = listaDeTercetos.crearTerceto("BGE",Compind+6);
-      nodoSumarAuxRes = listaDeTercetos.crearTerceto("+", "@auxResultado", pilaCola.pop());
-      nodoSumarAuxRes = listaDeTercetos.crearTerceto("=", "@auxResultado", nodoSumarAuxRes);
-      nodoSumarFlag = listaDeTercetos.crearTerceto("+", "@flagPivot", "_1");
-      nodoSumarFlag = listaDeTercetos.crearTerceto("=", "@flagPivot", nodoSumarFlag);
+    public void agregarErroresATabla() {
+        tablaDeSimbolos.agregarEnTabla("@errorListaVacia", "String", '"'+errorListaVacia+'"', errorListaVacia.length());
+        tablaDeSimbolos.agregarEnTabla("@errorPivot", "String", '"'+errorPivot+'"', errorPivot.length());
+        tablaDeSimbolos.agregarEnTabla("@errorMayor", "String", '"'+errorMayor+'"', errorMayor.length());
     }
-    return nodoSumarAuxRes;
-  }
 
   private final AnalizadorSintactico parser;
 
@@ -227,6 +197,7 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		 mostrarRegla(Regla.REGLA_0_S);
                 Sind = Pind;
+                agregarErroresATabla();
                 tablaDeSimbolos.guardarTabla();
                 listaDeTercetos.guardarTercetos();
                 gestorDeCodigoAssembler.escribirAssemblerDeTercetos(listaDeTercetos.getTercetos(), tablaDeSimbolos.getListaDeSimbolos());
@@ -299,16 +270,22 @@ class CUP$AnalizadorSintactico$actions {
 		 mostrarRegla(Regla.REGLA_4_READ);
             tablaDeSimbolos.agregarEnTabla(id, "Integer", null, null);
             tablaDeSimbolos.agregarEnTabla("_1" , "Integer", "1", null);
+            String nombreCte = "_cte_s"+contadorCteString;
+            contadorCteString++;
+            String valorCte ="Por favor, ingrese nuevamente un numero: ";
+            tablaDeSimbolos.agregarEnTabla(nombreCte, "String", '"'+valorCte+'"',null);
+            
+            Etind = listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
             Rind = listaDeTercetos.crearTerceto("READ", id);
-            tablaDeSimbolos.agregarEnTabla("@pivot", "Integer", null, null);
-            listaDeTercetos.crearTerceto("=", "@pivot", id );
-            Cind = listaDeTercetos.crearTerceto("CMP", "@pivot", "1");
-            cantElementosLista = 0;
-            listaDeTercetos.crearTerceto("BLE", Cind + 4);
-            tablaDeSimbolos.agregarEnTabla(null, "String", "\"" + errorPivot + "\"", errorPivot.length() - 2);
-            String nombreCte = tablaDeSimbolos.buscarSimboloPorValor("\"" + errorPivot + "\"").getNombre();
+            Rind =  listaDeTercetos.crearTerceto("CMP", id, "_1");
+            Rind =  listaDeTercetos.crearTerceto("BGT", Rind + 5);
+            listaDeTercetos.crearTerceto("WRITE", "@errorPivot");
             listaDeTercetos.crearTerceto("WRITE", nombreCte);
-            listaDeTercetos.crearTerceto("BGE", "fin");
+            listaDeTercetos.crearTerceto("READ", id);
+            //listaDeTercetos.crearTerceto("BI", Etind);
+			listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
+            listaDeTercetos.crearTerceto("=", "@pivot", id );
+          
         
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("READ",3, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -324,13 +301,7 @@ class CUP$AnalizadorSintactico$actions {
 		 mostrarRegla(Regla.REGLA_5_ASIG);
             tablaDeSimbolos.agregarEnTabla(id, "Integer", null, null);
             
-            if(!listaVacia){
-            listaDeTercetos.crearTerceto("=", id, "@auxRes");
-        
-            
-            
-            
-           } 
+            listaDeTercetos.crearTerceto("=", id, "@resultado");
         
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("ASIG",4, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -344,11 +315,15 @@ class CUP$AnalizadorSintactico$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)).right;
 		String id = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)).value;
 		 mostrarRegla(Regla.REGLA_6_SI);
-            listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
-            if(!tablaDeSimbolos.existeEnTabla(id)) throw new Error("La variable < " + id + " > no est� definida");
-            
-             Cind = recorrerPilaParaCola();
-            
+            Promind = listaDeTercetos.crearTerceto("CMP", "@contador", "_0");
+            listaDeTercetos.crearTerceto("BNE", Promind + 4);
+            listaDeTercetos.crearTerceto("WRITE", "@errorMayor");
+            listaDeTercetos.crearTerceto("JMP", "fin");
+
+            tablaDeSimbolos.agregarEnTabla("@resultado", "Integer", null, null);
+			listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
+            Promind = listaDeTercetos.crearTerceto("/", "@auxPromedio", "@contador");
+            listaDeTercetos.crearTerceto("=", "@resultado", Promind);
            
         
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("PROMR",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-7)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -362,12 +337,9 @@ class CUP$AnalizadorSintactico$actions {
 		int idleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-4)).left;
 		int idright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-4)).right;
 		String id = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-4)).value;
-		 mostrarRegla(Regla.REGLA_7_SI);
-            
+		 mostrarRegla(Regla.REGLA_7_SI);        
             listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
-        	tablaDeSimbolos.agregarEnTabla(null, "String", "\"" + errorListaVacia + "\"", errorListaVacia.length() - 2);
-            String nombreCte = tablaDeSimbolos.buscarSimboloPorValor("\"" + errorListaVacia + "\"").getNombre();
-            listaDeTercetos.crearTerceto("WRITE", nombreCte);
+            listaDeTercetos.crearTerceto("WRITE", "@errorListaVacia");
             listaDeTercetos.crearTerceto("JMP", "fin");
             listaVacia = true;
             
@@ -385,8 +357,20 @@ class CUP$AnalizadorSintactico$actions {
 		String cte = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                      tablaDeSimbolos.agregarEnTabla("_"+cte,"Integer", cte, null);
-                     cantElementosLista = 1;    
-                     pilaCola.push(cte);
+                     tablaDeSimbolos.agregarEnTabla("_0","Integer", "0", null);
+                     tablaDeSimbolos.agregarEnTabla("@contador","Integer", null, null);
+                     tablaDeSimbolos.agregarEnTabla("@auxPromedio","Integer", null, null);
+                     tablaDeSimbolos.agregarEnTabla("@pivot","Integer",null,null);
+                    
+                    listaDeTercetos.crearTerceto("=", "@contador", "_0" );
+                    listaDeTercetos.crearTerceto("=", "@auxPromedio", "_0");
+                    Lind =listaDeTercetos.crearTerceto("CMP", cte, "@pivot");
+                    listaDeTercetos.crearTerceto("BGT", Lind + 6);
+                    Lind = listaDeTercetos.crearTerceto("+", "@auxPromedio", cte);
+                    listaDeTercetos.crearTerceto("=", "@auxPromedio",Lind);
+                    Lind = listaDeTercetos.crearTerceto("+", "@contador", "_1");
+                    listaDeTercetos.crearTerceto("=", "@contador",Lind);
+					listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("LISTA",6, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -402,8 +386,13 @@ class CUP$AnalizadorSintactico$actions {
 		
                     
                      tablaDeSimbolos.agregarEnTabla("_"+cte, "Integer", cte, null);
-                     cantElementosLista++; 
-                     pilaCola.push(cte);
+                    Lind =listaDeTercetos.crearTerceto("CMP", cte, "@pivot");
+                    listaDeTercetos.crearTerceto("BGT", Lind + 6);
+                    Lind = listaDeTercetos.crearTerceto("+", "@auxPromedio", cte);
+                    listaDeTercetos.crearTerceto("=", "@auxPromedio",Lind);
+                    Lind = listaDeTercetos.crearTerceto("+", "@contador", "_1");
+                    listaDeTercetos.crearTerceto("=", "@contador",Lind);
+                    listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("LISTA",6, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -413,14 +402,16 @@ class CUP$AnalizadorSintactico$actions {
           case 13: // WRITE ::= write cte_s 
             {
               Symbol RESULT =null;
-		int cteleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).left;
-		int cteright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
-		String cte = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
+		int cte_sleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).left;
+		int cte_sright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
+		String cte_s = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		 mostrarRegla(Regla.REGLA_10_WRITE);
-           listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
-            tablaDeSimbolos.agregarEnTabla("@string", "String", cte, cte.length() - 2);
-            String nombreCte = tablaDeSimbolos.buscarSimboloPorValor(cte).getNombre();
-            Wind = listaDeTercetos.crearTerceto("WRITE", nombreCte);
+            String stringSinComillas = cte_s.substring(1, cte_s.length() - 1);
+            String nombreCteString = "_cte_s" + contadorCteString;
+            contadorCteString++;
+            tablaDeSimbolos.agregarEnTabla(nombreCteString, "String", cte_s, stringSinComillas.length());
+            listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
+            Wind = listaDeTercetos.crearTerceto("WRITE", nombreCteString);
             
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("WRITE",7, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -435,7 +426,7 @@ class CUP$AnalizadorSintactico$actions {
 		String id = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		 mostrarRegla(Regla.REGLA_11_WRITE);
            listaDeTercetos.crearTerceto("ETIQ", String.format("%02d", listaDeTercetos.getCantCreados()));
-            if(!tablaDeSimbolos.existeEnTabla(id)) throw new Error("La variable < " + id + " > no est� definida");
+            if(!tablaDeSimbolos.existeEnTabla(id)) throw new Error("La variable < " + id + " > no esta definida");
             Wind = listaDeTercetos.crearTerceto("WRITE", id);
             
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("WRITE",7, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);

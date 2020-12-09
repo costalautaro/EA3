@@ -2,10 +2,21 @@ NOMBRE                                       |TIPODATO                          
 _cte_s0                                      |String                                       |"Ingrese un valor pivot mayor o igual a 1: " |42                                           
 pivot                                        |Integer                                      |-                                            |-                                            
 _1                                           |Integer                                      |1                                            |-                                            
+_cte_s1                                      |String                                       |"Por favor, ingrese nuevamente un numero: "  |-                                            
+_2                                           |Integer                                      |2                                            |-                                            
+_0                                           |Integer                                      |0                                            |-                                            
+@contador                                    |Integer                                      |-                                            |-                                            
+@auxPromedio                                 |Integer                                      |-                                            |-                                            
 @pivot                                       |Integer                                      |-                                            |-                                            
-_cte_s1                                      |String                                       |"El valor debe ser >=1"                      |19                                           
+_3                                           |Integer                                      |3                                            |-                                            
+_4                                           |Integer                                      |4                                            |-                                            
 _5                                           |Integer                                      |5                                            |-                                            
-@contL                                       |Integer                                      |2                                            |-                                            
-_cte_s2                                      |String                                       |"La lista tiene menos elementos que el indicado"|44                                           
+_6                                           |Integer                                      |6                                            |-                                            
+_7                                           |Integer                                      |7                                            |-                                            
+_8                                           |Integer                                      |8                                            |-                                            
+@resultado                                   |Integer                                      |-                                            |-                                            
 resul                                        |Integer                                      |-                                            |-                                            
-_cte_s3                                      |String                                       |"El resultado es: "                          |17                                           
+_cte_s2                                      |String                                       |"El resultado es: "                          |17                                           
+_cte_s3                                      |String                                       |"La lista esta vacia, resultado: 0"          |33                                           
+_cte_s4                                      |String                                       |"El valor debe ser >=1"                      |21                                           
+_cte_s5                                      |String                                       |"No existen elementos para el calculo, el resultado es 0"|55                                           

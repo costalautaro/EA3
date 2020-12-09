@@ -10,7 +10,7 @@ public class TablaDeSimbolos {
 
     private static final String ARCHIVO_TABLA_SIMBOLOS = "ts.txt";
     private List<Simbolo> listaDeSimbolos;
-    private static Integer CANT_CTES_STRING_CREADAS = 0;
+    public static Integer CANT_CTES_STRING_CREADAS = 0;
 
     public TablaDeSimbolos() {
         this.listaDeSimbolos = new LinkedList<>();

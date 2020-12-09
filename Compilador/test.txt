@@ -1,5 +1,5 @@
 WRITE "Ingrese un valor pivot mayor o igual a 1: "
 READ pivot
-resul = promr ( pivot ; [ 1, 5 ] )
+resul = promr ( pivot ; [2,3,4,5,6,7,8] )
 WRITE "El resultado es: "
 WRITE resul

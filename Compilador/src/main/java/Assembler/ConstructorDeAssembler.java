@@ -67,6 +67,9 @@ public class ConstructorDeAssembler {
                 case "+":
                     assembler.append(gestorSuma(terceto));
                     break;
+                case "/":
+                	assembler.append(gestorDivision(terceto));
+                	break;
                 case "++":
                     assembler.append(generarCodigoIncremento(terceto));
                     break;
@@ -99,16 +102,19 @@ public class ConstructorDeAssembler {
                     break;
                 case "JMP":
                     assembler.append(generarCodigoJMP(terceto));
-                    break;   
+                    break;
+                case "BI":
+                	assembler.append(generarCodigoJMP(terceto));
                 default:
-                    throw new IllegalStateException("Valor inesperado en el terceto: " + terceto.getValor());
             }
         });
 
         return assembler.toString();
     }
 
-    private String generarCodigoBGE(Terceto terceto) {
+	
+
+	private String generarCodigoBGE(Terceto terceto) {
         String id = terceto.getIzq().replace("[", "").replace("]", "");
         return formatAssembler("JAE", String.format("ETIQ%s", id)) + "\n";
     }
@@ -185,9 +191,7 @@ public class ConstructorDeAssembler {
 
     private String gestorSuma(Terceto terceto){
     	String izq = terceto.getIzq();
-    	String der = terceto.getDer();
-        
-      
+    	String der = terceto.getDer();   
         String asmFields = formatAssembler("FLD", izq)+formatAssembler("FLD", der);
         String asmCommands = formatAssembler("FADD");
         String asmStore = formatAssembler("FSTP", izq);
@@ -195,6 +199,17 @@ public class ConstructorDeAssembler {
 
         return asmFields + asmCommands + asmStore + asmFree + "\n"; 
     }
+    
+    private String gestorDivision(Terceto terceto) {
+    	String izq = terceto.getIzq();
+    	String der = terceto.getDer();   
+        String asmFields = formatAssembler("FLD", izq)+formatAssembler("FLD", der);
+        String asmCommands = formatAssembler("FDIV");
+        String asmStore = formatAssembler("FSTP", izq);
+        String asmFree = formatAssembler("FFREE");
+        return asmFields + asmCommands + asmStore + asmFree + "\n"; 
+
+	}
     
     private String generarCodigoIncremento(Terceto terceto) {
     	String izq = terceto.getIzq();
